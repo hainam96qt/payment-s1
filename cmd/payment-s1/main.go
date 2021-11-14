@@ -1,4 +1,4 @@
-package main
+package payment_s1
 
 import (
 	"challenge/api"

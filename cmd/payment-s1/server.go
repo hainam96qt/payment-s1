@@ -1,9 +1,9 @@
-package main
+package payment_s1
 
 import (
 	"challenge/api"
 	"context"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"log"
 	"net"
