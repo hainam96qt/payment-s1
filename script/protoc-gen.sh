@@ -5,4 +5,4 @@ protoc -I . --proto_path=api --grpc-gateway_out .  \
     --grpc-gateway_opt standalone=true \
     api/service.proto
 
- protoc --proto_path=api --go_out=api --go_opt=paths=source_relative --go-grpc_out=api --go-grpc_opt=paths=source_relative --go-http_out=api service.proto
+protoc --proto_path=api --go_out=api --go_opt=paths=source_relative --go-grpc_out=api --go-grpc_opt=paths=source_relative --go-http_out=api service.proto

@@ -28,7 +28,7 @@ func NewPaymentServer(cfg *configs.Config) (*PaymentServer, error) {
 
 func (s *PaymentServer) HelloWorld(ctx context.Context, req *HelloWorldRequest) (*HelloWorldResponse, error) {
 	var r= &entities.HelloWorldRequest{
-	Id: int(req.Id),
+		Id: int(req.Id),
 	}
 	result, err := s.PaymentService.HelloWorld(ctx, *r)
 	if err != nil {

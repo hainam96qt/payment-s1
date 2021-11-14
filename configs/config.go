@@ -22,9 +22,6 @@ const (
 	EnvRabbitmqName = "AMQP_URL"
 	EnvMysqldbName  = "MYSQL_URL"
 
-	EnvApiHost      = "PLAYLIST_API_HOST"
-	EnvApiHostToken = "PLAYLIST_API_TOKEN"
-
 	EnvControllerHttp = "CAS_CONTROLLER_HOST"
 )
 
@@ -40,22 +37,6 @@ func NewConfig() (*Config, error) {
 	}
 	config.Mysqldb = mysql_db.DatabaseConfig{Conn: connMysqlString}
 
-	// Host
-	hostInfo := os.Getenv(EnvApiHost)
-	if hostInfo == "" {
-		return nil, common.NewErr(error_code.Internal, "Empty host info")
-	}
-	hostInfoToken := os.Getenv(EnvApiHostToken)
-	if hostInfoToken == "" {
-		return nil, common.NewErr(error_code.Internal, "Empty host info token")
-	}
-	// Controller host
-	host := Host{
-		ApiHost:        hostInfo,
-		ApiHostToken:   hostInfoToken,
-		ControllerHost: os.Getenv(EnvControllerHttp),
-	}
-	config.Host = host
 
 	return config, nil
 }
