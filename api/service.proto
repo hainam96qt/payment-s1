@@ -1,0 +1,25 @@
+syntax = "proto3";
+package v1;
+
+option go_package="/api";
+
+import "annotations.proto";
+
+service PaymentService {
+    rpc HelloWorld(HelloWorldRequest) returns (HelloWorldResponse){
+        option (google.api.http) = {
+              post: "/HelloWorld"
+              body: "*"
+            };
+    };
+}
+
+message HelloWorldRequest {
+    int64 id = 1;
+
+}
+
+message HelloWorldResponse {
+    int64 request_id = 1;
+    string message = 2;
+}
