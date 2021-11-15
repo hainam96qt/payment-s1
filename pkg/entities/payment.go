@@ -5,7 +5,6 @@ import (
 )
 
 type Payment interface {
-	Init()
 	HelloWorld(ctx context.Context, p HelloWorldRequest) (HelloWorldResponse, error)
 }
 

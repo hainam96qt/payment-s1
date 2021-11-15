@@ -17,7 +17,7 @@ func (s *PaymentServer) mustEmbedUnimplementedPaymentServiceServer() {
 }
 
 func NewPaymentServer(cfg *configs.Config) (*PaymentServer, error) {
-	paymentService, err := service.NewTaskService(cfg)
+	paymentService, err := service.NewPaymentService(cfg)
 	if err != nil {
 		return nil, err
 	}
@@ -37,6 +37,6 @@ func (s *PaymentServer) HelloWorld(ctx context.Context, req *HelloWorldRequest) 
 	}
 	return &HelloWorldResponse{
 		RequestId:     int64(result.Id),
-		Message:       "",
+		Message:       result.Message,
 	}, nil
 }

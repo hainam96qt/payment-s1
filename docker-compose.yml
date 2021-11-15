@@ -5,30 +5,14 @@ networks:
     driver: bridge
 
 services:
-#  payment-s:
-#    build:
-#      context: ""
-#      dockerfile: Dockerfile
-#      target: cas-ctl-app
-#    restart: on-failure
-#    ports:
-#      - "8082:8082"
-#      - "8080:8080"
-#    depends_on:
-#      - mysql-db
-#    networks:
-#      - cas-network
-
   mysql-db:
     image: mysql:5.7.30
     command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     restart: on-failure
-    networks:
-      - cas-network
     environment:
       MYSQL_ROOT_PASSWORD: mysql_db
-      MYSQL_DATABASE: content_assurance_service
-      MYSQL_USER: vieon
+      MYSQL_DATABASE: challenge
+      MYSQL_USER: payment_user
       MYSQL_PASSWORD: mysql_db
     volumes:
       - ~/volumes/mysql_db:/var/lib/mysql_db

@@ -2,15 +2,15 @@ package configs
 
 import (
 	"challenge/pkg/db/mysql_db"
-	"challenge/pkg/entities/common"
-	error_code "challenge/pkg/enum/error"
 	"os"
+	yaml "github.com/go-yaml/yaml"
 )
 
 type Config struct {
 	Host     Host
-	Mysqldb  mysql_db.DatabaseConfig
+	Mysqldb  mysql_db.DatabaseConfig `yaml:"mysql"`
 }
+
 
 type Host struct {
 	ApiHost        string
@@ -18,25 +18,25 @@ type Host struct {
 	ControllerHost string
 }
 
-const (
-	EnvRabbitmqName = "AMQP_URL"
-	EnvMysqldbName  = "MYSQL_URL"
-
-	EnvControllerHttp = "CAS_CONTROLLER_HOST"
-)
 
 // NewConfig returns a new decoded Config struct
 func NewConfig() (*Config, error) {
+	// Create config structure
 	config := &Config{}
 
-	// Database mysql_db config
-	// {user}:{password}@tcp({host}:{post})/{database}?charset=utf8&parseTime=True&loc=Local
-	connMysqlString := os.Getenv(EnvMysqldbName)
-	if connMysqlString == "" {
-		return nil, common.NewErr(error_code.Internal, "Empty string connection to mysql_db")
+	// Open config file
+	file, err := os.Open("./config.yml")
+	if err != nil {
+		return nil, err
 	}
-	config.Mysqldb = mysql_db.DatabaseConfig{Conn: connMysqlString}
+	defer file.Close()
 
+	d := yaml.NewDecoder(file)
+
+	// Start YAML decoding from file
+	if err := d.Decode(&config); err != nil {
+		return nil, err
+	}
 
 	return config, nil
 }

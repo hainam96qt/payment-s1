@@ -1,5 +1,5 @@
-rabbitmq:
-  host: localhost
-  user_name: guest
-  password: guest
-  port: 5672
+mysql:
+  port: mysql_db
+  database: challenge
+  user: payment_user
+  password: mysql_db
