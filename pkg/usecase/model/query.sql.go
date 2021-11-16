@@ -5,16 +5,203 @@ package db
 
 import (
 	"context"
+	"database/sql"
 )
 
-const getPayment = `-- name: GetPayment :one
-SELECT id, request_id FROM payment
-WHERE id = ? LIMIT 1
+const createBuyWagerLog = `-- name: CreateBuyWagerLog :exec
+INSERT INTO buy_wager_log (
+    id,
+    wager_id,
+    buying_price,
+    bought_at
+) VALUES (
+    ?,?,?,?
+)
 `
 
-func (q *Queries) GetPayment(ctx context.Context, id string) (Payment, error) {
-	row := q.db.QueryRowContext(ctx, getPayment, id)
-	var i Payment
-	err := row.Scan(&i.ID, &i.RequestID)
+type CreateBuyWagerLogParams struct {
+	ID          int32           `json:"id"`
+	WagerID     sql.NullInt32   `json:"wager_id"`
+	BuyingPrice sql.NullFloat64 `json:"buying_price"`
+	BoughtAt    sql.NullTime    `json:"bought_at"`
+}
+
+func (q *Queries) CreateBuyWagerLog(ctx context.Context, arg CreateBuyWagerLogParams) error {
+	_, err := q.db.ExecContext(ctx, createBuyWagerLog,
+		arg.ID,
+		arg.WagerID,
+		arg.BuyingPrice,
+		arg.BoughtAt,
+	)
+	return err
+}
+
+const createWager = `-- name: CreateWager :exec
+INSERT INTO wager (
+    id,
+    odds,
+    total_wager_value,
+    selling_percentage,
+    selling_price,
+    current_selling_price,
+    percentage_sold,
+    amount_sold,
+    placed_at
+) VALUES (
+    ?,?,?,?,?,?,?,?,?
+)
+`
+
+type CreateWagerParams struct {
+	ID                  int32           `json:"id"`
+	Odds                sql.NullInt64   `json:"odds"`
+	TotalWagerValue     sql.NullInt64   `json:"total_wager_value"`
+	SellingPercentage   sql.NullInt64   `json:"selling_percentage"`
+	SellingPrice        sql.NullFloat64 `json:"selling_price"`
+	CurrentSellingPrice sql.NullFloat64 `json:"current_selling_price"`
+	PercentageSold      sql.NullFloat64 `json:"percentage_sold"`
+	AmountSold          sql.NullInt64   `json:"amount_sold"`
+	PlacedAt            sql.NullTime    `json:"placed_at"`
+}
+
+func (q *Queries) CreateWager(ctx context.Context, arg CreateWagerParams) error {
+	_, err := q.db.ExecContext(ctx, createWager,
+		arg.ID,
+		arg.Odds,
+		arg.TotalWagerValue,
+		arg.SellingPercentage,
+		arg.SellingPrice,
+		arg.CurrentSellingPrice,
+		arg.PercentageSold,
+		arg.AmountSold,
+		arg.PlacedAt,
+	)
+	return err
+}
+
+const getBuyWager = `-- name: GetBuyWager :one
+SELECT id, wager_id, buying_price, bought_at FROM buy_wager_log where wager_id = ? order by id desc LIMIT 1
+`
+
+func (q *Queries) GetBuyWager(ctx context.Context, wagerID sql.NullInt32) (BuyWagerLog, error) {
+	row := q.db.QueryRowContext(ctx, getBuyWager, wagerID)
+	var i BuyWagerLog
+	err := row.Scan(
+		&i.ID,
+		&i.WagerID,
+		&i.BuyingPrice,
+		&i.BoughtAt,
+	)
 	return i, err
+}
+
+const getWager = `-- name: GetWager :one
+SELECT id, odds, total_wager_value, selling_percentage, selling_price, current_selling_price, percentage_sold, amount_sold, placed_at FROM wager where odds = ? and total_wager_value = ? order by id desc LIMIT 1
+`
+
+type GetWagerParams struct {
+	Odds            sql.NullInt64 `json:"odds"`
+	TotalWagerValue sql.NullInt64 `json:"total_wager_value"`
+}
+
+func (q *Queries) GetWager(ctx context.Context, arg GetWagerParams) (Wager, error) {
+	row := q.db.QueryRowContext(ctx, getWager, arg.Odds, arg.TotalWagerValue)
+	var i Wager
+	err := row.Scan(
+		&i.ID,
+		&i.Odds,
+		&i.TotalWagerValue,
+		&i.SellingPercentage,
+		&i.SellingPrice,
+		&i.CurrentSellingPrice,
+		&i.PercentageSold,
+		&i.AmountSold,
+		&i.PlacedAt,
+	)
+	return i, err
+}
+
+const getWagerById = `-- name: GetWagerById :one
+SELECT id, odds, total_wager_value, selling_percentage, selling_price, current_selling_price, percentage_sold, amount_sold, placed_at FROM wager where id = ?
+`
+
+func (q *Queries) GetWagerById(ctx context.Context, id int32) (Wager, error) {
+	row := q.db.QueryRowContext(ctx, getWagerById, id)
+	var i Wager
+	err := row.Scan(
+		&i.ID,
+		&i.Odds,
+		&i.TotalWagerValue,
+		&i.SellingPercentage,
+		&i.SellingPrice,
+		&i.CurrentSellingPrice,
+		&i.PercentageSold,
+		&i.AmountSold,
+		&i.PlacedAt,
+	)
+	return i, err
+}
+
+const listWagers = `-- name: ListWagers :many
+SELECT id, odds, total_wager_value, selling_percentage, selling_price, current_selling_price, percentage_sold, amount_sold, placed_at FROM wager LIMIT ? OFFSET ?
+`
+
+type ListWagersParams struct {
+	Limit  int32 `json:"limit"`
+	Offset int32 `json:"offset"`
+}
+
+func (q *Queries) ListWagers(ctx context.Context, arg ListWagersParams) ([]Wager, error) {
+	rows, err := q.db.QueryContext(ctx, listWagers, arg.Limit, arg.Offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Wager
+	for rows.Next() {
+		var i Wager
+		if err := rows.Scan(
+			&i.ID,
+			&i.Odds,
+			&i.TotalWagerValue,
+			&i.SellingPercentage,
+			&i.SellingPrice,
+			&i.CurrentSellingPrice,
+			&i.PercentageSold,
+			&i.AmountSold,
+			&i.PlacedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const updateWager = `-- name: UpdateWager :exec
+UPDATE wager set current_selling_price = ?, percentage_sold = ?, amount_sold = ?
+WHERE id = ?
+`
+
+type UpdateWagerParams struct {
+	CurrentSellingPrice sql.NullFloat64 `json:"current_selling_price"`
+	PercentageSold      sql.NullFloat64 `json:"percentage_sold"`
+	AmountSold          sql.NullInt64   `json:"amount_sold"`
+	ID                  int32           `json:"id"`
+}
+
+func (q *Queries) UpdateWager(ctx context.Context, arg UpdateWagerParams) error {
+	_, err := q.db.ExecContext(ctx, updateWager,
+		arg.CurrentSellingPrice,
+		arg.PercentageSold,
+		arg.AmountSold,
+		arg.ID,
+	)
+	return err
 }

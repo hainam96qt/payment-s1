@@ -1,10 +1,10 @@
 package main
 
 import (
-	"challenge/api"
-	"challenge/configs"
 	"context"
 	"log"
+	"payment-s1/api"
+	"payment-s1/configs"
 )
 
 /*grpc server*/

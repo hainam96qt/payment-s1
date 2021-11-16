@@ -1,7 +1,7 @@
 package common
 
 import (
-	error_enum "challenge/pkg/enum/error"
+	error_enum "payment-s1/pkg/entities/errors"
 )
 
 type Error struct {

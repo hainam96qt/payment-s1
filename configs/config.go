@@ -1,23 +1,15 @@
 package configs
 
 import (
-	"challenge/pkg/db/mysql_db"
 	"os"
+	"payment-s1/pkg/db/mysql_db"
+
 	yaml "github.com/go-yaml/yaml"
 )
 
 type Config struct {
-	Host     Host
-	Mysqldb  mysql_db.DatabaseConfig `yaml:"mysql"`
+	Mysqldb mysql_db.DatabaseConfig `yaml:"mysql"`
 }
-
-
-type Host struct {
-	ApiHost        string
-	ApiHostToken   string
-	ControllerHost string
-}
-
 
 // NewConfig returns a new decoded Config struct
 func NewConfig() (*Config, error) {

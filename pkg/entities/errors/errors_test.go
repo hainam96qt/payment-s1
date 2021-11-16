@@ -1,8 +1,9 @@
-package error
+package errors
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestCreateError(t *testing.T) {
@@ -10,14 +11,6 @@ func TestCreateError(t *testing.T) {
 		value    ErrorCode
 		expected string
 	}{
-		{
-			value:    WrongOrder,
-			expected: mapErrorMsg[WrongOrder],
-		},
-		{
-			value:    WrongFormat,
-			expected: mapErrorMsg[WrongFormat],
-		},
 		{
 			value:    Undefined,
 			expected: mapErrorMsg[Undefined],
@@ -28,7 +21,7 @@ func TestCreateError(t *testing.T) {
 		assert.Equal(t, mapErrorMsg[v.value], v.expected)
 
 		err = NewErrorEnumWithMsg(v.value, "This is test new msg")
-		assert.Equal(t, "This is test new msg", err.Msg)
+		assert.Equal(t, "This is test new msg", err.Message)
 		assert.NotNil(t, testcase)
 	}
 }

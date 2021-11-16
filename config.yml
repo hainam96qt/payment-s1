@@ -1,5 +1,6 @@
 mysql:
-  port: mysql_db
-  database: challenge
+  host: 127.0.0.1
+  port: 3306
+  database: payment-s1
   user: payment_user
   password: mysql_db

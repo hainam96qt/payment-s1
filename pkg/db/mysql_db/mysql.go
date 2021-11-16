@@ -3,19 +3,22 @@ package mysql_db
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
 	"log"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type DatabaseConfig struct {
-	Username string  `yaml:"username"`
-	Password string `yaml:"password"`
-	Port string `yaml:"post"`
-	DatabaseName string `yaml:"database_name"`
+	Username     string `yaml:"user"`
+	Password     string `yaml:"password"`
+	Port         string `yaml:"port"`
+	DatabaseName string `yaml:"database"`
+	Host         string `yaml:"host"`
 }
 
 func ConnectDatabase(args DatabaseConfig) (*sql.DB, error) {
-	db, err := sql.Open("mysql", fmt.Sprint("%s:%s@tcp(127.0.0.1:%s)/%s)", args.Username, args.Password, args.Port, args.DatabaseName))
+	var con = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", args.Username, args.Password, args.Host, args.Port, args.DatabaseName)
+	db, err := sql.Open("mysql", con)
 	if err != nil {
 		log.Print(err.Error())
 		return nil, err

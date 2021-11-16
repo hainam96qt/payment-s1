@@ -1,14 +1,14 @@
 package main
 
 import (
-	"challenge/api"
 	"context"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"google.golang.org/grpc"
 	"log"
 	"net"
 	"net/http"
+	"payment-s1/api"
 
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"google.golang.org/grpc"
 )
 
 // RunServer runs gRPC service to publish ToDo service

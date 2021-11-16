@@ -4,22 +4,77 @@ package v1;
 option go_package="/api";
 
 import "annotations.proto";
+import "google/protobuf/timestamp.proto";
 
 service PaymentService {
-    rpc HelloWorld(HelloWorldRequest) returns (HelloWorldResponse){
+    rpc CreateWager(CreateWagerRequest) returns (CreateWagerResponse){
         option (google.api.http) = {
-              post: "/HelloWorld"
+              post: "/wagers"
               body: "*"
             };
     };
+    rpc BuyWager(BuyWagerRequest) returns (BuyWagerResponse){
+        option (google.api.http) = {
+              post: "/buy/{wager_id}"
+              body: "*"
+            };
+    };
+    rpc GetWager(GetWagerRequest) returns (GetWagerResponse){
+        option (google.api.http) = {
+              get: "/wagers"
+        };
+    };
 }
 
-message HelloWorldRequest {
-    int64 id = 1;
-
+message GetWagerRequest {
+  int32 page = 1;
+  int32 limit = 2;
 }
 
-message HelloWorldResponse {
-    int64 request_id = 1;
-    string message = 2;
+message GetWagerResponse {
+  repeated Wager wager= 1;
+}
+
+message BuyWagerRequest {
+  int32 wager_id = 2;
+  double buying_price = 1;
+}
+
+message  BuyWagerResponse {
+  int32  id = 1;
+  int32 wager_id = 2;
+  double buying_price = 3;
+  google.protobuf.Timestamp bought_at = 8;
+}
+
+
+message CreateWagerRequest {
+  int64 total_wager_value = 1;
+  int64 odds = 2;
+  int64 selling_percentage = 3;
+  double selling_price = 4;
+}
+
+message CreateWagerResponse {
+  int32 id = 9;
+  int64 total_wager_value = 1;
+  int64 odds = 2;
+  int64 selling_percentage = 3;
+  double selling_price = 4;
+  double current_selling_price = 5;
+  double percentage_sold = 6;
+  int64 amount_sold = 7;
+  google.protobuf.Timestamp PlacedAt = 8;
+}
+
+message Wager {
+  int32 id = 9;
+  int64 total_wager_value = 1;
+  int64 odds = 2;
+  int64 selling_percentage = 3;
+  double selling_price = 4;
+  double current_selling_price = 5;
+  double percentage_sold = 6;
+  int64 amount_sold = 7;
+  google.protobuf.Timestamp PlacedAt = 8;
 }

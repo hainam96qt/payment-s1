@@ -18,7 +18,9 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PaymentServiceClient interface {
-	HelloWorld(ctx context.Context, in *HelloWorldRequest, opts ...grpc.CallOption) (*HelloWorldResponse, error)
+	CreateWager(ctx context.Context, in *CreateWagerRequest, opts ...grpc.CallOption) (*CreateWagerResponse, error)
+	BuyWager(ctx context.Context, in *BuyWagerRequest, opts ...grpc.CallOption) (*BuyWagerResponse, error)
+	GetWager(ctx context.Context, in *GetWagerRequest, opts ...grpc.CallOption) (*GetWagerResponse, error)
 }
 
 type paymentServiceClient struct {
@@ -29,9 +31,27 @@ func NewPaymentServiceClient(cc grpc.ClientConnInterface) PaymentServiceClient {
 	return &paymentServiceClient{cc}
 }
 
-func (c *paymentServiceClient) HelloWorld(ctx context.Context, in *HelloWorldRequest, opts ...grpc.CallOption) (*HelloWorldResponse, error) {
-	out := new(HelloWorldResponse)
-	err := c.cc.Invoke(ctx, "/v1.PaymentService/HelloWorld", in, out, opts...)
+func (c *paymentServiceClient) CreateWager(ctx context.Context, in *CreateWagerRequest, opts ...grpc.CallOption) (*CreateWagerResponse, error) {
+	out := new(CreateWagerResponse)
+	err := c.cc.Invoke(ctx, "/v1.PaymentService/CreateWager", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *paymentServiceClient) BuyWager(ctx context.Context, in *BuyWagerRequest, opts ...grpc.CallOption) (*BuyWagerResponse, error) {
+	out := new(BuyWagerResponse)
+	err := c.cc.Invoke(ctx, "/v1.PaymentService/BuyWager", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *paymentServiceClient) GetWager(ctx context.Context, in *GetWagerRequest, opts ...grpc.CallOption) (*GetWagerResponse, error) {
+	out := new(GetWagerResponse)
+	err := c.cc.Invoke(ctx, "/v1.PaymentService/GetWager", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +62,9 @@ func (c *paymentServiceClient) HelloWorld(ctx context.Context, in *HelloWorldReq
 // All implementations must embed UnimplementedPaymentServiceServer
 // for forward compatibility
 type PaymentServiceServer interface {
-	HelloWorld(context.Context, *HelloWorldRequest) (*HelloWorldResponse, error)
+	CreateWager(context.Context, *CreateWagerRequest) (*CreateWagerResponse, error)
+	BuyWager(context.Context, *BuyWagerRequest) (*BuyWagerResponse, error)
+	GetWager(context.Context, *GetWagerRequest) (*GetWagerResponse, error)
 	mustEmbedUnimplementedPaymentServiceServer()
 }
 
@@ -50,8 +72,14 @@ type PaymentServiceServer interface {
 type UnimplementedPaymentServiceServer struct {
 }
 
-func (UnimplementedPaymentServiceServer) HelloWorld(context.Context, *HelloWorldRequest) (*HelloWorldResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method HelloWorld not implemented")
+func (UnimplementedPaymentServiceServer) CreateWager(context.Context, *CreateWagerRequest) (*CreateWagerResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateWager not implemented")
+}
+func (UnimplementedPaymentServiceServer) BuyWager(context.Context, *BuyWagerRequest) (*BuyWagerResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BuyWager not implemented")
+}
+func (UnimplementedPaymentServiceServer) GetWager(context.Context, *GetWagerRequest) (*GetWagerResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWager not implemented")
 }
 func (UnimplementedPaymentServiceServer) mustEmbedUnimplementedPaymentServiceServer() {}
 
@@ -66,20 +94,56 @@ func RegisterPaymentServiceServer(s grpc.ServiceRegistrar, srv PaymentServiceSer
 	s.RegisterService(&PaymentService_ServiceDesc, srv)
 }
 
-func _PaymentService_HelloWorld_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(HelloWorldRequest)
+func _PaymentService_CreateWager_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateWagerRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PaymentServiceServer).HelloWorld(ctx, in)
+		return srv.(PaymentServiceServer).CreateWager(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/v1.PaymentService/HelloWorld",
+		FullMethod: "/v1.PaymentService/CreateWager",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PaymentServiceServer).HelloWorld(ctx, req.(*HelloWorldRequest))
+		return srv.(PaymentServiceServer).CreateWager(ctx, req.(*CreateWagerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PaymentService_BuyWager_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BuyWagerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PaymentServiceServer).BuyWager(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/v1.PaymentService/BuyWager",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PaymentServiceServer).BuyWager(ctx, req.(*BuyWagerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PaymentService_GetWager_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWagerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PaymentServiceServer).GetWager(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/v1.PaymentService/GetWager",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PaymentServiceServer).GetWager(ctx, req.(*GetWagerRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -92,8 +156,16 @@ var PaymentService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*PaymentServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "HelloWorld",
-			Handler:    _PaymentService_HelloWorld_Handler,
+			MethodName: "CreateWager",
+			Handler:    _PaymentService_CreateWager_Handler,
+		},
+		{
+			MethodName: "BuyWager",
+			Handler:    _PaymentService_BuyWager_Handler,
+		},
+		{
+			MethodName: "GetWager",
+			Handler:    _PaymentService_GetWager_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
