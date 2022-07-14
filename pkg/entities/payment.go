@@ -2,13 +2,27 @@ package entities
 
 import (
 	"context"
+	"github.com/dgrijalva/jwt-go"
 	"time"
 )
 
-type Payment interface {
+type Authentication interface {
+	Login (context.Context, *LoginRequest) (*LoginResponse, error)
+}
+
+type OrderProduct interface {
 	CreateWager(context.Context, *CreateWagerRequest) (*CreateWagerResponse, error)
 	BuyWager(context.Context, *BuyWagerRequest) (*BuyWagerResponse, error)
 	GetListWager(context.Context, *GetListWagerRequest) (*GetListWagerResponse, error)
+}
+
+type LoginRequest struct {
+	 Username string
+	 Password string
+}
+
+type LoginResponse struct {
+	 Token string
 }
 
 type GetListWagerRequest struct {
@@ -61,4 +75,9 @@ type Wager struct {
 	PercentageSold      float64
 	AmountSold          int64
 	PlacedAt            time.Time
+}
+
+type Claims struct {
+	Username string `json:"username"`
+	jwt.StandardClaims
 }

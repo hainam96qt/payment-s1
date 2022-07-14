@@ -4,3 +4,4 @@ mysql:
   database: payment-s1
   user: payment_user
   password: mysql_db
+secret_key: abcdef123

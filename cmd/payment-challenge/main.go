@@ -14,14 +14,19 @@ func main() {
 	if err != nil {
 		log.Print(err)
 	}
-	v1API, err := api.NewPaymentServer(cfg)
+	v1API, err := api.NewOrderProductServer(cfg)
+	if err != nil {
+		log.Fatal(err.Error())
+		return
+	}
+	authenAPI, err := api.NewAuthenticationServer(cfg)
 	if err != nil {
 		log.Fatal(err.Error())
 		return
 	}
 
 	go func() {
-		log.Fatal(RunServerGRPC(ctx, v1API, "8080"))
+		log.Fatal(RunServerGRPC(ctx, v1API, authenAPI, "8080"))
 		return
 	}()
 

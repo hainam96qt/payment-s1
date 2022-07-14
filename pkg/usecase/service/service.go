@@ -13,26 +13,26 @@ import (
 	"payment-s1/pkg/entities/errors"
 )
 
-var _ entities.Payment = &PaymentService{}
+var _ entities.OrderProduct = &OrderProductService{}
 
-type PaymentService struct {
+type OrderProductService struct {
 	DatabaseConn *sql.DB
 	Query        *sql_modle.Queries
 }
 
-func NewPaymentService(cfg *configs.Config) (*PaymentService, error) {
+func NewOrderProductService(cfg *configs.Config) (*OrderProductService, error) {
 	databaseConn, err := mysql_db.ConnectDatabase(cfg.Mysqldb)
 	if err != nil {
 		return nil, err
 	}
 	query := sql_modle.New(databaseConn)
-	return &PaymentService{
+	return &OrderProductService{
 		DatabaseConn: databaseConn,
 		Query:        query,
 	}, nil
 }
 
-func (p PaymentService) CreateWager(ctx context.Context, request *entities.CreateWagerRequest) (*entities.CreateWagerResponse, error) {
+func (p OrderProductService) CreateWager(ctx context.Context, request *entities.CreateWagerRequest) (*entities.CreateWagerResponse, error) {
 	if request.TotalWagerValue == 0 {
 		return nil, errors.NewErr(errors.ErrorDescription, "ERROR_DESCRIPTION")
 	}
@@ -75,7 +75,7 @@ func (p PaymentService) CreateWager(ctx context.Context, request *entities.Creat
 	}, nil
 }
 
-func (p PaymentService) BuyWager(ctx context.Context, request *entities.BuyWagerRequest) (*entities.BuyWagerResponse, error) {
+func (p OrderProductService) BuyWager(ctx context.Context, request *entities.BuyWagerRequest) (*entities.BuyWagerResponse, error) {
 	wagerDb, err := p.Query.GetWagerById(ctx, request.WagerID)
 	if err != nil {
 		return nil, err
@@ -118,7 +118,7 @@ func (p PaymentService) BuyWager(ctx context.Context, request *entities.BuyWager
 	}, nil
 }
 
-func (p PaymentService) GetListWager(ctx context.Context, request *entities.GetListWagerRequest) (*entities.GetListWagerResponse, error) {
+func (p OrderProductService) GetListWager(ctx context.Context, request *entities.GetListWagerRequest) (*entities.GetListWagerResponse, error) {
 	if request.Paging <= 0 || request.Limit <= 0 {
 		return nil, errors.NewErr(errors.ErrorDescription, "ERROR_DESCRIPTION1")
 	}

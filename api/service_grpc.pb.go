@@ -14,158 +14,244 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// PaymentServiceClient is the client API for PaymentService service.
+// AuthenticationServiceClient is the client API for AuthenticationService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type PaymentServiceClient interface {
+type AuthenticationServiceClient interface {
+	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
+}
+
+type authenticationServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewAuthenticationServiceClient(cc grpc.ClientConnInterface) AuthenticationServiceClient {
+	return &authenticationServiceClient{cc}
+}
+
+func (c *authenticationServiceClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
+	out := new(LoginResponse)
+	err := c.cc.Invoke(ctx, "/v1.AuthenticationService/Login", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// AuthenticationServiceServer is the server API for AuthenticationService service.
+// All implementations must embed UnimplementedAuthenticationServiceServer
+// for forward compatibility
+type AuthenticationServiceServer interface {
+	Login(context.Context, *LoginRequest) (*LoginResponse, error)
+	mustEmbedUnimplementedAuthenticationServiceServer()
+}
+
+// UnimplementedAuthenticationServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedAuthenticationServiceServer struct {
+}
+
+func (UnimplementedAuthenticationServiceServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedAuthenticationServiceServer) mustEmbedUnimplementedAuthenticationServiceServer() {}
+
+// UnsafeAuthenticationServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to AuthenticationServiceServer will
+// result in compilation errors.
+type UnsafeAuthenticationServiceServer interface {
+	mustEmbedUnimplementedAuthenticationServiceServer()
+}
+
+func RegisterAuthenticationServiceServer(s grpc.ServiceRegistrar, srv AuthenticationServiceServer) {
+	s.RegisterService(&AuthenticationService_ServiceDesc, srv)
+}
+
+func _AuthenticationService_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LoginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthenticationServiceServer).Login(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/v1.AuthenticationService/Login",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthenticationServiceServer).Login(ctx, req.(*LoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// AuthenticationService_ServiceDesc is the grpc.ServiceDesc for AuthenticationService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var AuthenticationService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "v1.AuthenticationService",
+	HandlerType: (*AuthenticationServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Login",
+			Handler:    _AuthenticationService_Login_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "service.proto",
+}
+
+// OrderProductServiceClient is the client API for OrderProductService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type OrderProductServiceClient interface {
 	CreateWager(ctx context.Context, in *CreateWagerRequest, opts ...grpc.CallOption) (*CreateWagerResponse, error)
 	BuyWager(ctx context.Context, in *BuyWagerRequest, opts ...grpc.CallOption) (*BuyWagerResponse, error)
 	GetWager(ctx context.Context, in *GetWagerRequest, opts ...grpc.CallOption) (*GetWagerResponse, error)
 }
 
-type paymentServiceClient struct {
+type orderProductServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewPaymentServiceClient(cc grpc.ClientConnInterface) PaymentServiceClient {
-	return &paymentServiceClient{cc}
+func NewOrderProductServiceClient(cc grpc.ClientConnInterface) OrderProductServiceClient {
+	return &orderProductServiceClient{cc}
 }
 
-func (c *paymentServiceClient) CreateWager(ctx context.Context, in *CreateWagerRequest, opts ...grpc.CallOption) (*CreateWagerResponse, error) {
+func (c *orderProductServiceClient) CreateWager(ctx context.Context, in *CreateWagerRequest, opts ...grpc.CallOption) (*CreateWagerResponse, error) {
 	out := new(CreateWagerResponse)
-	err := c.cc.Invoke(ctx, "/v1.PaymentService/CreateWager", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/v1.OrderProductService/CreateWager", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *paymentServiceClient) BuyWager(ctx context.Context, in *BuyWagerRequest, opts ...grpc.CallOption) (*BuyWagerResponse, error) {
+func (c *orderProductServiceClient) BuyWager(ctx context.Context, in *BuyWagerRequest, opts ...grpc.CallOption) (*BuyWagerResponse, error) {
 	out := new(BuyWagerResponse)
-	err := c.cc.Invoke(ctx, "/v1.PaymentService/BuyWager", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/v1.OrderProductService/BuyWager", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *paymentServiceClient) GetWager(ctx context.Context, in *GetWagerRequest, opts ...grpc.CallOption) (*GetWagerResponse, error) {
+func (c *orderProductServiceClient) GetWager(ctx context.Context, in *GetWagerRequest, opts ...grpc.CallOption) (*GetWagerResponse, error) {
 	out := new(GetWagerResponse)
-	err := c.cc.Invoke(ctx, "/v1.PaymentService/GetWager", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/v1.OrderProductService/GetWager", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// PaymentServiceServer is the server API for PaymentService service.
-// All implementations must embed UnimplementedPaymentServiceServer
+// OrderProductServiceServer is the server API for OrderProductService service.
+// All implementations must embed UnimplementedOrderProductServiceServer
 // for forward compatibility
-type PaymentServiceServer interface {
+type OrderProductServiceServer interface {
 	CreateWager(context.Context, *CreateWagerRequest) (*CreateWagerResponse, error)
 	BuyWager(context.Context, *BuyWagerRequest) (*BuyWagerResponse, error)
 	GetWager(context.Context, *GetWagerRequest) (*GetWagerResponse, error)
-	mustEmbedUnimplementedPaymentServiceServer()
+	mustEmbedUnimplementedOrderProductServiceServer()
 }
 
-// UnimplementedPaymentServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedPaymentServiceServer struct {
+// UnimplementedOrderProductServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedOrderProductServiceServer struct {
 }
 
-func (UnimplementedPaymentServiceServer) CreateWager(context.Context, *CreateWagerRequest) (*CreateWagerResponse, error) {
+func (UnimplementedOrderProductServiceServer) CreateWager(context.Context, *CreateWagerRequest) (*CreateWagerResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateWager not implemented")
 }
-func (UnimplementedPaymentServiceServer) BuyWager(context.Context, *BuyWagerRequest) (*BuyWagerResponse, error) {
+func (UnimplementedOrderProductServiceServer) BuyWager(context.Context, *BuyWagerRequest) (*BuyWagerResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BuyWager not implemented")
 }
-func (UnimplementedPaymentServiceServer) GetWager(context.Context, *GetWagerRequest) (*GetWagerResponse, error) {
+func (UnimplementedOrderProductServiceServer) GetWager(context.Context, *GetWagerRequest) (*GetWagerResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetWager not implemented")
 }
-func (UnimplementedPaymentServiceServer) mustEmbedUnimplementedPaymentServiceServer() {}
+func (UnimplementedOrderProductServiceServer) mustEmbedUnimplementedOrderProductServiceServer() {}
 
-// UnsafePaymentServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to PaymentServiceServer will
+// UnsafeOrderProductServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to OrderProductServiceServer will
 // result in compilation errors.
-type UnsafePaymentServiceServer interface {
-	mustEmbedUnimplementedPaymentServiceServer()
+type UnsafeOrderProductServiceServer interface {
+	mustEmbedUnimplementedOrderProductServiceServer()
 }
 
-func RegisterPaymentServiceServer(s grpc.ServiceRegistrar, srv PaymentServiceServer) {
-	s.RegisterService(&PaymentService_ServiceDesc, srv)
+func RegisterOrderProductServiceServer(s grpc.ServiceRegistrar, srv OrderProductServiceServer) {
+	s.RegisterService(&OrderProductService_ServiceDesc, srv)
 }
 
-func _PaymentService_CreateWager_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _OrderProductService_CreateWager_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateWagerRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PaymentServiceServer).CreateWager(ctx, in)
+		return srv.(OrderProductServiceServer).CreateWager(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/v1.PaymentService/CreateWager",
+		FullMethod: "/v1.OrderProductService/CreateWager",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PaymentServiceServer).CreateWager(ctx, req.(*CreateWagerRequest))
+		return srv.(OrderProductServiceServer).CreateWager(ctx, req.(*CreateWagerRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _PaymentService_BuyWager_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _OrderProductService_BuyWager_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(BuyWagerRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PaymentServiceServer).BuyWager(ctx, in)
+		return srv.(OrderProductServiceServer).BuyWager(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/v1.PaymentService/BuyWager",
+		FullMethod: "/v1.OrderProductService/BuyWager",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PaymentServiceServer).BuyWager(ctx, req.(*BuyWagerRequest))
+		return srv.(OrderProductServiceServer).BuyWager(ctx, req.(*BuyWagerRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _PaymentService_GetWager_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _OrderProductService_GetWager_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetWagerRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PaymentServiceServer).GetWager(ctx, in)
+		return srv.(OrderProductServiceServer).GetWager(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/v1.PaymentService/GetWager",
+		FullMethod: "/v1.OrderProductService/GetWager",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PaymentServiceServer).GetWager(ctx, req.(*GetWagerRequest))
+		return srv.(OrderProductServiceServer).GetWager(ctx, req.(*GetWagerRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// PaymentService_ServiceDesc is the grpc.ServiceDesc for PaymentService service.
+// OrderProductService_ServiceDesc is the grpc.ServiceDesc for OrderProductService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var PaymentService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "v1.PaymentService",
-	HandlerType: (*PaymentServiceServer)(nil),
+var OrderProductService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "v1.OrderProductService",
+	HandlerType: (*OrderProductServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "CreateWager",
-			Handler:    _PaymentService_CreateWager_Handler,
+			Handler:    _OrderProductService_CreateWager_Handler,
 		},
 		{
 			MethodName: "BuyWager",
-			Handler:    _PaymentService_BuyWager_Handler,
+			Handler:    _OrderProductService_BuyWager_Handler,
 		},
 		{
 			MethodName: "GetWager",
-			Handler:    _PaymentService_GetWager_Handler,
+			Handler:    _OrderProductService_GetWager_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

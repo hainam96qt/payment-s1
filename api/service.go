@@ -10,19 +10,35 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-var _ PaymentServiceServer = &PaymentServer{}
 
-type PaymentServer struct {
-	PaymentService *service.PaymentService
+// order product service
+var _ OrderProductServiceServer = &OrderProductServer{}
+
+type OrderProductServer struct {
+	OrderProductService *service.OrderProductService
 }
 
-func (s *PaymentServer) GetWager(ctx context.Context, request *GetWagerRequest) (*GetWagerResponse, error) {
+func NewOrderProductServer(cfg *configs.Config) (*OrderProductServer, error) {
+	paymentService, err := service.NewOrderProductService(cfg)
+	if err != nil {
+		return nil, err
+	}
+	return &OrderProductServer{
+		OrderProductService: paymentService,
+	}, nil
+}
+
+func (s *OrderProductServer) Login(ctx context.Context, request *LoginRequest) (*LoginResponse, error) {
+	panic("implement me")
+}
+
+func (s *OrderProductServer) GetWager(ctx context.Context, request *GetWagerRequest) (*GetWagerResponse, error) {
 	fmt.Println(request.Limit)
 	var r = &entities.GetListWagerRequest{
 		Limit:  request.Limit,
 		Paging: request.Page,
 	}
-	result, err := s.PaymentService.GetListWager(ctx, r)
+	result, err := s.OrderProductService.GetListWager(ctx, r)
 	if err != nil {
 
 		return nil, err
@@ -46,12 +62,12 @@ func (s *PaymentServer) GetWager(ctx context.Context, request *GetWagerRequest) 
 	}, nil
 }
 
-func (s *PaymentServer) BuyWager(ctx context.Context, request *BuyWagerRequest) (*BuyWagerResponse, error) {
+func (s *OrderProductServer) BuyWager(ctx context.Context, request *BuyWagerRequest) (*BuyWagerResponse, error) {
 	var r = &entities.BuyWagerRequest{
 		WagerID:     int32(request.WagerId),
 		BuyingPrice: request.BuyingPrice,
 	}
-	result, err := s.PaymentService.BuyWager(ctx, r)
+	result, err := s.OrderProductService.BuyWager(ctx, r)
 	if err != nil {
 
 		return nil, err
@@ -64,14 +80,14 @@ func (s *PaymentServer) BuyWager(ctx context.Context, request *BuyWagerRequest) 
 	}, nil
 }
 
-func (s *PaymentServer) CreateWager(ctx context.Context, request *CreateWagerRequest) (*CreateWagerResponse, error) {
+func (s *OrderProductServer) CreateWager(ctx context.Context, request *CreateWagerRequest) (*CreateWagerResponse, error) {
 	var r = &entities.CreateWagerRequest{
 		TotalWagerValue:   request.TotalWagerValue,
 		Odds:              request.Odds,
 		SellingPercentage: float64(request.Odds),
 		SellingPrice:      float64(request.SellingPrice),
 	}
-	result, err := s.PaymentService.CreateWager(ctx, r)
+	result, err := s.OrderProductService.CreateWager(ctx, r)
 	if err != nil {
 
 		return nil, err
@@ -89,16 +105,44 @@ func (s *PaymentServer) CreateWager(ctx context.Context, request *CreateWagerReq
 	}, nil
 }
 
-func (s *PaymentServer) mustEmbedUnimplementedPaymentServiceServer() {
+func (s *OrderProductServer) mustEmbedUnimplementedOrderProductServiceServer() {
 	panic("implement me")
 }
 
-func NewPaymentServer(cfg *configs.Config) (*PaymentServer, error) {
-	paymentService, err := service.NewPaymentService(cfg)
+// authentication service
+var _ AuthenticationServiceServer = &AuthenticationServer{}
+
+type AuthenticationServer struct {
+	AuthenticationService *service.AuthenticationService
+}
+
+func NewAuthenticationServer(cfg *configs.Config) (*AuthenticationServer, error) {
+	AuthenticationService, err := service.NewAuthenticationService(cfg)
 	if err != nil {
 		return nil, err
 	}
-	return &PaymentServer{
-		PaymentService: paymentService,
+	return &AuthenticationServer{
+		AuthenticationService: AuthenticationService,
 	}, nil
 }
+
+
+func (a AuthenticationServer) Login(ctx context.Context, request *LoginRequest) (*LoginResponse, error) {
+	var r = &entities.LoginRequest{
+		Username: request.UserName,
+		Password: request.Password,
+	}
+	result, err := a.AuthenticationService.Login(ctx, r)
+	if err != nil {
+		return nil, err
+	}
+	return &LoginResponse{
+		Token:         result.Token,
+	}, nil
+}
+
+func (a AuthenticationServer) mustEmbedUnimplementedAuthenticationServiceServer() {
+	panic("implement me")
+}
+
+

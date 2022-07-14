@@ -11,8 +11,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-// RunServer runs gRPC service to publish ToDo service
-func RunServerGRPC(ctx context.Context, v1API *api.PaymentServer, port string) error {
+func RunServerGRPC(ctx context.Context, v1API *api.OrderProductServer, authen *api.AuthenticationServer, port string) error {
 	listen, err := net.Listen("tcp", ":"+port)
 	if err != nil {
 		return err
@@ -20,7 +19,8 @@ func RunServerGRPC(ctx context.Context, v1API *api.PaymentServer, port string) e
 
 	// register service
 	server := grpc.NewServer()
-	api.RegisterPaymentServiceServer(server, v1API)
+	api.RegisterOrderProductServiceServer(server, v1API)
+	api.RegisterAuthenticationServiceServer(server, authen)
 
 	// start gRPC server
 	log.Println("starting gRPC server at port:" + port)
@@ -30,11 +30,10 @@ func RunServerGRPC(ctx context.Context, v1API *api.PaymentServer, port string) e
 func RunServerREST(ctx context.Context, gPRCPort, httpPort string) error {
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithInsecure()}
-	err := api.RegisterPaymentServiceHandlerFromEndpoint(ctx, mux, ":"+gPRCPort, opts)
+	err := api.RegisterOrderProductServiceHandlerFromEndpoint(ctx, mux, ":"+gPRCPort, opts)
 	if err != nil {
 		return err
 	}
-
 	// start gRPC server
 	log.Println("starting REST server at port:" + httpPort)
 	return http.ListenAndServe(":"+httpPort, mux)

@@ -9,6 +9,7 @@ import (
 
 type Config struct {
 	Mysqldb mysql_db.DatabaseConfig `yaml:"mysql"`
+	SecretKey string `yaml:"secret_key"`
 }
 
 // NewConfig returns a new decoded Config struct

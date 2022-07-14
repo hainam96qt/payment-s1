@@ -22,6 +22,108 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type LoginRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	UserName string `protobuf:"bytes,1,opt,name=user_name,json=userName,proto3" json:"user_name,omitempty"`
+	Password string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+}
+
+func (x *LoginRequest) Reset() {
+	*x = LoginRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_service_proto_msgTypes[0]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *LoginRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LoginRequest) ProtoMessage() {}
+
+func (x *LoginRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_service_proto_msgTypes[0]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LoginRequest.ProtoReflect.Descriptor instead.
+func (*LoginRequest) Descriptor() ([]byte, []int) {
+	return file_service_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *LoginRequest) GetUserName() string {
+	if x != nil {
+		return x.UserName
+	}
+	return ""
+}
+
+func (x *LoginRequest) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+type LoginResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Token string `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+}
+
+func (x *LoginResponse) Reset() {
+	*x = LoginResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_service_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *LoginResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LoginResponse) ProtoMessage() {}
+
+func (x *LoginResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_service_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LoginResponse.ProtoReflect.Descriptor instead.
+func (*LoginResponse) Descriptor() ([]byte, []int) {
+	return file_service_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *LoginResponse) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
 type GetWagerRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -34,7 +136,7 @@ type GetWagerRequest struct {
 func (x *GetWagerRequest) Reset() {
 	*x = GetWagerRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_service_proto_msgTypes[0]
+		mi := &file_service_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -47,7 +149,7 @@ func (x *GetWagerRequest) String() string {
 func (*GetWagerRequest) ProtoMessage() {}
 
 func (x *GetWagerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_proto_msgTypes[0]
+	mi := &file_service_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -60,7 +162,7 @@ func (x *GetWagerRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetWagerRequest.ProtoReflect.Descriptor instead.
 func (*GetWagerRequest) Descriptor() ([]byte, []int) {
-	return file_service_proto_rawDescGZIP(), []int{0}
+	return file_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *GetWagerRequest) GetPage() int32 {
@@ -88,7 +190,7 @@ type GetWagerResponse struct {
 func (x *GetWagerResponse) Reset() {
 	*x = GetWagerResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_service_proto_msgTypes[1]
+		mi := &file_service_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -101,7 +203,7 @@ func (x *GetWagerResponse) String() string {
 func (*GetWagerResponse) ProtoMessage() {}
 
 func (x *GetWagerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_proto_msgTypes[1]
+	mi := &file_service_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -114,7 +216,7 @@ func (x *GetWagerResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetWagerResponse.ProtoReflect.Descriptor instead.
 func (*GetWagerResponse) Descriptor() ([]byte, []int) {
-	return file_service_proto_rawDescGZIP(), []int{1}
+	return file_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *GetWagerResponse) GetWager() []*Wager {
@@ -136,7 +238,7 @@ type BuyWagerRequest struct {
 func (x *BuyWagerRequest) Reset() {
 	*x = BuyWagerRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_service_proto_msgTypes[2]
+		mi := &file_service_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -149,7 +251,7 @@ func (x *BuyWagerRequest) String() string {
 func (*BuyWagerRequest) ProtoMessage() {}
 
 func (x *BuyWagerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_proto_msgTypes[2]
+	mi := &file_service_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -162,7 +264,7 @@ func (x *BuyWagerRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BuyWagerRequest.ProtoReflect.Descriptor instead.
 func (*BuyWagerRequest) Descriptor() ([]byte, []int) {
-	return file_service_proto_rawDescGZIP(), []int{2}
+	return file_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *BuyWagerRequest) GetWagerId() int32 {
@@ -193,7 +295,7 @@ type BuyWagerResponse struct {
 func (x *BuyWagerResponse) Reset() {
 	*x = BuyWagerResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_service_proto_msgTypes[3]
+		mi := &file_service_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -206,7 +308,7 @@ func (x *BuyWagerResponse) String() string {
 func (*BuyWagerResponse) ProtoMessage() {}
 
 func (x *BuyWagerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_proto_msgTypes[3]
+	mi := &file_service_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -219,7 +321,7 @@ func (x *BuyWagerResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BuyWagerResponse.ProtoReflect.Descriptor instead.
 func (*BuyWagerResponse) Descriptor() ([]byte, []int) {
-	return file_service_proto_rawDescGZIP(), []int{3}
+	return file_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *BuyWagerResponse) GetId() int32 {
@@ -264,7 +366,7 @@ type CreateWagerRequest struct {
 func (x *CreateWagerRequest) Reset() {
 	*x = CreateWagerRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_service_proto_msgTypes[4]
+		mi := &file_service_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -277,7 +379,7 @@ func (x *CreateWagerRequest) String() string {
 func (*CreateWagerRequest) ProtoMessage() {}
 
 func (x *CreateWagerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_proto_msgTypes[4]
+	mi := &file_service_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -290,7 +392,7 @@ func (x *CreateWagerRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateWagerRequest.ProtoReflect.Descriptor instead.
 func (*CreateWagerRequest) Descriptor() ([]byte, []int) {
-	return file_service_proto_rawDescGZIP(), []int{4}
+	return file_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *CreateWagerRequest) GetTotalWagerValue() int64 {
@@ -340,7 +442,7 @@ type CreateWagerResponse struct {
 func (x *CreateWagerResponse) Reset() {
 	*x = CreateWagerResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_service_proto_msgTypes[5]
+		mi := &file_service_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -353,7 +455,7 @@ func (x *CreateWagerResponse) String() string {
 func (*CreateWagerResponse) ProtoMessage() {}
 
 func (x *CreateWagerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_proto_msgTypes[5]
+	mi := &file_service_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -366,7 +468,7 @@ func (x *CreateWagerResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateWagerResponse.ProtoReflect.Descriptor instead.
 func (*CreateWagerResponse) Descriptor() ([]byte, []int) {
-	return file_service_proto_rawDescGZIP(), []int{5}
+	return file_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *CreateWagerResponse) GetId() int32 {
@@ -451,7 +553,7 @@ type Wager struct {
 func (x *Wager) Reset() {
 	*x = Wager{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_service_proto_msgTypes[6]
+		mi := &file_service_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -464,7 +566,7 @@ func (x *Wager) String() string {
 func (*Wager) ProtoMessage() {}
 
 func (x *Wager) ProtoReflect() protoreflect.Message {
-	mi := &file_service_proto_msgTypes[6]
+	mi := &file_service_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -477,7 +579,7 @@ func (x *Wager) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Wager.ProtoReflect.Descriptor instead.
 func (*Wager) Descriptor() ([]byte, []int) {
-	return file_service_proto_rawDescGZIP(), []int{6}
+	return file_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *Wager) GetId() int32 {
@@ -550,7 +652,14 @@ var file_service_proto_rawDesc = []byte{
 	0x02, 0x76, 0x31, 0x1a, 0x11, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73,
 	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1f, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70,
 	0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d,
-	0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x3b, 0x0a, 0x0f, 0x47, 0x65, 0x74, 0x57, 0x61,
+	0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x47, 0x0a, 0x0c, 0x4c, 0x6f, 0x67, 0x69, 0x6e,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1b, 0x0a, 0x09, 0x75, 0x73, 0x65, 0x72, 0x5f,
+	0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x75, 0x73, 0x65, 0x72,
+	0x4e, 0x61, 0x6d, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x70, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x70, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64,
+	0x22, 0x25, 0x0a, 0x0d, 0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x22, 0x3b, 0x0a, 0x0f, 0x47, 0x65, 0x74, 0x57, 0x61,
 	0x67, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x70, 0x61,
 	0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x04, 0x70, 0x61, 0x67, 0x65, 0x12, 0x14,
 	0x0a, 0x05, 0x6c, 0x69, 0x6d, 0x69, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x05, 0x6c,
@@ -628,24 +737,30 @@ var file_service_proto_rawDesc = []byte{
 	0x36, 0x0a, 0x08, 0x50, 0x6c, 0x61, 0x63, 0x65, 0x64, 0x41, 0x74, 0x18, 0x08, 0x20, 0x01, 0x28,
 	0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
 	0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x08, 0x50,
-	0x6c, 0x61, 0x63, 0x65, 0x64, 0x41, 0x74, 0x32, 0xff, 0x01, 0x0a, 0x0e, 0x50, 0x61, 0x79, 0x6d,
-	0x65, 0x6e, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x52, 0x0a, 0x0b, 0x43, 0x72,
-	0x65, 0x61, 0x74, 0x65, 0x57, 0x61, 0x67, 0x65, 0x72, 0x12, 0x16, 0x2e, 0x76, 0x31, 0x2e, 0x43,
-	0x72, 0x65, 0x61, 0x74, 0x65, 0x57, 0x61, 0x67, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x1a, 0x17, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x57, 0x61, 0x67,
-	0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x12, 0x82, 0xd3, 0xe4, 0x93,
-	0x02, 0x0c, 0x22, 0x07, 0x2f, 0x77, 0x61, 0x67, 0x65, 0x72, 0x73, 0x3a, 0x01, 0x2a, 0x12, 0x51,
-	0x0a, 0x08, 0x42, 0x75, 0x79, 0x57, 0x61, 0x67, 0x65, 0x72, 0x12, 0x13, 0x2e, 0x76, 0x31, 0x2e,
-	0x42, 0x75, 0x79, 0x57, 0x61, 0x67, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
-	0x14, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x79, 0x57, 0x61, 0x67, 0x65, 0x72, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x1a, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x14, 0x22, 0x0f, 0x2f,
-	0x62, 0x75, 0x79, 0x2f, 0x7b, 0x77, 0x61, 0x67, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x7d, 0x3a, 0x01,
-	0x2a, 0x12, 0x46, 0x0a, 0x08, 0x47, 0x65, 0x74, 0x57, 0x61, 0x67, 0x65, 0x72, 0x12, 0x13, 0x2e,
-	0x76, 0x31, 0x2e, 0x47, 0x65, 0x74, 0x57, 0x61, 0x67, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65,
-	0x73, 0x74, 0x1a, 0x14, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x74, 0x57, 0x61, 0x67, 0x65, 0x72,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x0f, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x09,
-	0x12, 0x07, 0x2f, 0x77, 0x61, 0x67, 0x65, 0x72, 0x73, 0x42, 0x06, 0x5a, 0x04, 0x2f, 0x61, 0x70,
-	0x69, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6c, 0x61, 0x63, 0x65, 0x64, 0x41, 0x74, 0x32, 0x58, 0x0a, 0x15, 0x41, 0x75, 0x74, 0x68, 0x65,
+	0x6e, 0x74, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
+	0x12, 0x3f, 0x0a, 0x05, 0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x12, 0x10, 0x2e, 0x76, 0x31, 0x2e, 0x4c,
+	0x6f, 0x67, 0x69, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x11, 0x2e, 0x76, 0x31,
+	0x2e, 0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x11,
+	0x82, 0xd3, 0xe4, 0x93, 0x02, 0x0b, 0x22, 0x06, 0x2f, 0x6c, 0x6f, 0x67, 0x69, 0x6e, 0x3a, 0x01,
+	0x2a, 0x32, 0x84, 0x02, 0x0a, 0x13, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x50, 0x72, 0x6f, 0x64, 0x75,
+	0x63, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x52, 0x0a, 0x0b, 0x43, 0x72, 0x65,
+	0x61, 0x74, 0x65, 0x57, 0x61, 0x67, 0x65, 0x72, 0x12, 0x16, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x72,
+	0x65, 0x61, 0x74, 0x65, 0x57, 0x61, 0x67, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x1a, 0x17, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x57, 0x61, 0x67, 0x65,
+	0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x12, 0x82, 0xd3, 0xe4, 0x93, 0x02,
+	0x0c, 0x22, 0x07, 0x2f, 0x77, 0x61, 0x67, 0x65, 0x72, 0x73, 0x3a, 0x01, 0x2a, 0x12, 0x51, 0x0a,
+	0x08, 0x42, 0x75, 0x79, 0x57, 0x61, 0x67, 0x65, 0x72, 0x12, 0x13, 0x2e, 0x76, 0x31, 0x2e, 0x42,
+	0x75, 0x79, 0x57, 0x61, 0x67, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x14,
+	0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x79, 0x57, 0x61, 0x67, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x1a, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x14, 0x22, 0x0f, 0x2f, 0x62,
+	0x75, 0x79, 0x2f, 0x7b, 0x77, 0x61, 0x67, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x7d, 0x3a, 0x01, 0x2a,
+	0x12, 0x46, 0x0a, 0x08, 0x47, 0x65, 0x74, 0x57, 0x61, 0x67, 0x65, 0x72, 0x12, 0x13, 0x2e, 0x76,
+	0x31, 0x2e, 0x47, 0x65, 0x74, 0x57, 0x61, 0x67, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x1a, 0x14, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x74, 0x57, 0x61, 0x67, 0x65, 0x72, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x0f, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x09, 0x12,
+	0x07, 0x2f, 0x77, 0x61, 0x67, 0x65, 0x72, 0x73, 0x42, 0x06, 0x5a, 0x04, 0x2f, 0x61, 0x70, 0x69,
+	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -660,30 +775,34 @@ func file_service_proto_rawDescGZIP() []byte {
 	return file_service_proto_rawDescData
 }
 
-var file_service_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_service_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_service_proto_goTypes = []interface{}{
-	(*GetWagerRequest)(nil),       // 0: v1.GetWagerRequest
-	(*GetWagerResponse)(nil),      // 1: v1.GetWagerResponse
-	(*BuyWagerRequest)(nil),       // 2: v1.BuyWagerRequest
-	(*BuyWagerResponse)(nil),      // 3: v1.BuyWagerResponse
-	(*CreateWagerRequest)(nil),    // 4: v1.CreateWagerRequest
-	(*CreateWagerResponse)(nil),   // 5: v1.CreateWagerResponse
-	(*Wager)(nil),                 // 6: v1.Wager
-	(*timestamppb.Timestamp)(nil), // 7: google.protobuf.Timestamp
+	(*LoginRequest)(nil),          // 0: v1.LoginRequest
+	(*LoginResponse)(nil),         // 1: v1.LoginResponse
+	(*GetWagerRequest)(nil),       // 2: v1.GetWagerRequest
+	(*GetWagerResponse)(nil),      // 3: v1.GetWagerResponse
+	(*BuyWagerRequest)(nil),       // 4: v1.BuyWagerRequest
+	(*BuyWagerResponse)(nil),      // 5: v1.BuyWagerResponse
+	(*CreateWagerRequest)(nil),    // 6: v1.CreateWagerRequest
+	(*CreateWagerResponse)(nil),   // 7: v1.CreateWagerResponse
+	(*Wager)(nil),                 // 8: v1.Wager
+	(*timestamppb.Timestamp)(nil), // 9: google.protobuf.Timestamp
 }
 var file_service_proto_depIdxs = []int32{
-	6, // 0: v1.GetWagerResponse.wager:type_name -> v1.Wager
-	7, // 1: v1.BuyWagerResponse.bought_at:type_name -> google.protobuf.Timestamp
-	7, // 2: v1.CreateWagerResponse.PlacedAt:type_name -> google.protobuf.Timestamp
-	7, // 3: v1.Wager.PlacedAt:type_name -> google.protobuf.Timestamp
-	4, // 4: v1.PaymentService.CreateWager:input_type -> v1.CreateWagerRequest
-	2, // 5: v1.PaymentService.BuyWager:input_type -> v1.BuyWagerRequest
-	0, // 6: v1.PaymentService.GetWager:input_type -> v1.GetWagerRequest
-	5, // 7: v1.PaymentService.CreateWager:output_type -> v1.CreateWagerResponse
-	3, // 8: v1.PaymentService.BuyWager:output_type -> v1.BuyWagerResponse
-	1, // 9: v1.PaymentService.GetWager:output_type -> v1.GetWagerResponse
-	7, // [7:10] is the sub-list for method output_type
-	4, // [4:7] is the sub-list for method input_type
+	8, // 0: v1.GetWagerResponse.wager:type_name -> v1.Wager
+	9, // 1: v1.BuyWagerResponse.bought_at:type_name -> google.protobuf.Timestamp
+	9, // 2: v1.CreateWagerResponse.PlacedAt:type_name -> google.protobuf.Timestamp
+	9, // 3: v1.Wager.PlacedAt:type_name -> google.protobuf.Timestamp
+	0, // 4: v1.AuthenticationService.Login:input_type -> v1.LoginRequest
+	6, // 5: v1.OrderProductService.CreateWager:input_type -> v1.CreateWagerRequest
+	4, // 6: v1.OrderProductService.BuyWager:input_type -> v1.BuyWagerRequest
+	2, // 7: v1.OrderProductService.GetWager:input_type -> v1.GetWagerRequest
+	1, // 8: v1.AuthenticationService.Login:output_type -> v1.LoginResponse
+	7, // 9: v1.OrderProductService.CreateWager:output_type -> v1.CreateWagerResponse
+	5, // 10: v1.OrderProductService.BuyWager:output_type -> v1.BuyWagerResponse
+	3, // 11: v1.OrderProductService.GetWager:output_type -> v1.GetWagerResponse
+	8, // [8:12] is the sub-list for method output_type
+	4, // [4:8] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name
 	4, // [4:4] is the sub-list for extension extendee
 	0, // [0:4] is the sub-list for field type_name
@@ -696,7 +815,7 @@ func file_service_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_service_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetWagerRequest); i {
+			switch v := v.(*LoginRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -708,7 +827,7 @@ func file_service_proto_init() {
 			}
 		}
 		file_service_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetWagerResponse); i {
+			switch v := v.(*LoginResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -720,7 +839,7 @@ func file_service_proto_init() {
 			}
 		}
 		file_service_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BuyWagerRequest); i {
+			switch v := v.(*GetWagerRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -732,7 +851,7 @@ func file_service_proto_init() {
 			}
 		}
 		file_service_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BuyWagerResponse); i {
+			switch v := v.(*GetWagerResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -744,7 +863,7 @@ func file_service_proto_init() {
 			}
 		}
 		file_service_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateWagerRequest); i {
+			switch v := v.(*BuyWagerRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -756,7 +875,7 @@ func file_service_proto_init() {
 			}
 		}
 		file_service_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateWagerResponse); i {
+			switch v := v.(*BuyWagerResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -768,6 +887,30 @@ func file_service_proto_init() {
 			}
 		}
 		file_service_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CreateWagerRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_service_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CreateWagerResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_service_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Wager); i {
 			case 0:
 				return &v.state
@@ -786,9 +929,9 @@ func file_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_service_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   9,
 			NumExtensions: 0,
-			NumServices:   1,
+			NumServices:   2,
 		},
 		GoTypes:           file_service_proto_goTypes,
 		DependencyIndexes: file_service_proto_depIdxs,
